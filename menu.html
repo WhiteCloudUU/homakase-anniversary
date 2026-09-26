@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#e9e4d8">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23f3f0e8'/%3E%3Cpath d='M32 53S9 40 9 23c0-7 5-12 12-12 5 0 9 3 11 7 2-4 6-7 11-7 7 0 12 5 12 12 0 17-23 30-23 30Z' fill='%239d372b'/%3E%3C/svg%3E">
+  <title>Homakase — One Year Anniversary</title>
+  <style>
+    :root {
+      --paper: #f3f0e8;
+      --paper-deep: #e5dfd2;
+      --ink: #171915;
+      --muted: #74736c;
+      --line: rgba(23, 25, 21, .16);
+      --vermillion: #9d372b;
+      --glow-x: 50%;
+      --glow-y: 20%;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { background: #d7d1c5; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 15% 5%, rgba(255,255,255,.7), transparent 25rem),
+        linear-gradient(135deg, #d7d1c5, #c9c2b5);
+      font-family: "Helvetica Neue", "Avenir Next", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .24;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
+      mix-blend-mode: multiply;
+    }
+
+    .stage {
+      min-height: 100vh;
+      padding: clamp(18px, 4vw, 56px);
+      display: grid;
+      place-items: center;
+    }
+
+    .menu {
+      position: relative;
+      isolation: isolate;
+      width: min(100%, 760px);
+      min-height: 920px;
+      overflow: hidden;
+      padding: clamp(54px, 9vw, 104px) clamp(30px, 10vw, 108px) clamp(48px, 8vw, 84px);
+      background:
+        radial-gradient(circle 420px at var(--glow-x) var(--glow-y), rgba(255,255,255,.82), transparent 72%),
+        var(--paper);
+      border: 1px solid rgba(64, 60, 52, .13);
+      box-shadow: 0 32px 90px rgba(40, 36, 29, .16), 0 2px 12px rgba(40, 36, 29, .06);
+    }
+
+    .reveal-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      -webkit-mask-image: radial-gradient(circle 110px at var(--glow-x) var(--glow-y), #000 0 38%, rgba(0,0,0,.8) 52%, transparent 76%);
+      mask-image: radial-gradient(circle 110px at var(--glow-x) var(--glow-y), #000 0 38%, rgba(0,0,0,.8) 52%, transparent 76%);
+      transition: opacity .35s ease;
+    }
+
+    .message-lockup {
+      width: min(82%, 620px);
+      display: grid;
+      justify-items: center;
+      gap: 24px;
+      color: var(--ink);
+      text-align: center;
+    }
+
+    .message-kicker {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 18px;
+      color: rgba(23, 25, 21, .32);
+      font-size: 8px;
+      font-weight: 500;
+      letter-spacing: .4em;
+      text-indent: .4em;
+      text-transform: uppercase;
+    }
+
+    .message-kicker::before,
+    .message-kicker::after {
+      content: "";
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(23, 25, 21, .18));
+    }
+
+    .message-kicker::after {
+      background: linear-gradient(to left, transparent, rgba(23, 25, 21, .18));
+    }
+
+    .hidden-message {
+      color: rgba(23, 25, 21, .24);
+      font-family: "Songti SC", "STSong", "Hiragino Mincho ProN", serif;
+      font-size: clamp(32px, 5.4vw, 44px);
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: .12em;
+      text-indent: .12em;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, .45);
+      transform: translateY(6px);
+      transition: color .75s ease, transform .75s cubic-bezier(.2,.7,.2,1), letter-spacing .75s ease;
+      white-space: nowrap;
+    }
+
+    .message-note {
+      color: rgba(23, 25, 21, .3);
+      font-family: Didot, "Bodoni 72", "Times New Roman", serif;
+      font-size: 12px;
+      font-style: italic;
+      letter-spacing: .1em;
+      transition: color .55s ease;
+    }
+
+    .menu.is-exploring .reveal-layer,
+    .menu.celebration-mode .reveal-layer {
+      opacity: 1;
+    }
+
+    .menu.celebration-mode .reveal-layer {
+      z-index: 2;
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+
+    .menu.celebration-mode .hidden-message {
+      color: rgba(23, 25, 21, .86);
+      letter-spacing: .16em;
+      transform: translateY(0);
+    }
+
+    .menu.celebration-mode .message-kicker,
+    .menu.celebration-mode .message-note {
+      color: rgba(23, 25, 21, .52);
+    }
+
+    .courses,
+    .footer,
+    .edge-copy,
+    .header .eyebrow,
+    .header h1,
+    .header .at-home {
+      transition: opacity .55s ease, filter .55s ease, transform .55s ease;
+    }
+
+    .menu.celebration-mode .courses,
+    .menu.celebration-mode .footer,
+    .menu.celebration-mode .edge-copy,
+    .menu.celebration-mode .header .eyebrow,
+    .menu.celebration-mode .header h1,
+    .menu.celebration-mode .header .at-home {
+      opacity: 0;
+      filter: blur(3px);
+      transform: translateY(-4px);
+      pointer-events: none;
+    }
+
+    .menu.celebration-mode .header { z-index: 4; }
+
+    .fireworks {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .menu::before,
+    .menu::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      border-radius: 50%;
+      filter: blur(.2px);
+      pointer-events: none;
+    }
+
+    .menu::before {
+      width: 360px;
+      height: 360px;
+      top: -238px;
+      right: -115px;
+      border: 1px solid rgba(157, 55, 43, .2);
+      box-shadow: inset 0 0 0 38px rgba(157, 55, 43, .025);
+    }
+
+    .menu::after {
+      width: 180px;
+      height: 180px;
+      left: -126px;
+      bottom: 66px;
+      border: 1px solid rgba(23, 25, 21, .11);
+    }
+
+    .edge-copy {
+      position: absolute;
+      top: 110px;
+      right: 18px;
+      writing-mode: vertical-rl;
+      font-family: "Songti SC", "Hiragino Mincho ProN", serif;
+      font-size: 11px;
+      line-height: 1;
+      letter-spacing: .42em;
+      color: rgba(23, 25, 21, .35);
+      z-index: 1;
+    }
+
+    .header {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding-bottom: clamp(50px, 8vw, 76px);
+    }
+
+    .eyebrow {
+      margin: 0 0 25px;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: .48em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    h1 {
+      margin: 0;
+      font-family: Didot, "Bodoni 72", "Times New Roman", serif;
+      font-size: clamp(46px, 9vw, 74px);
+      font-weight: 400;
+      line-height: .9;
+      letter-spacing: .09em;
+      text-indent: .09em;
+    }
+
+    .at-home {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 20px;
+      font-family: Didot, "Bodoni 72", "Times New Roman", serif;
+      font-size: 15px;
+      font-style: italic;
+      letter-spacing: .13em;
+      color: var(--muted);
+    }
+
+    .at-home::before,
+    .at-home::after {
+      content: "";
+      width: 24px;
+      height: 1px;
+      background: var(--line);
+    }
+
+    .seal {
+      position: absolute;
+      top: -21px;
+      right: 0;
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(157, 55, 43, .45);
+      color: var(--vermillion);
+      font-family: "Songti SC", "Hiragino Mincho ProN", serif;
+      font-size: 14px;
+      line-height: 1.05;
+      letter-spacing: .08em;
+      transform: rotate(2deg);
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+      z-index: 4;
+      transition: transform .35s cubic-bezier(.2,.7,.2,1), color .3s ease, border-color .3s ease;
+    }
+
+    .seal:hover {
+      color: #832e25;
+      border-color: rgba(157, 55, 43, .72);
+      transform: rotate(-4deg) scale(1.035);
+    }
+
+    .seal:focus-visible {
+      outline: 1px solid rgba(157, 55, 43, .4);
+      outline-offset: 4px;
+    }
+
+    .seal[aria-pressed="true"] {
+      color: var(--ink);
+      border-color: rgba(23, 25, 21, .38);
+      transform: rotate(0deg);
+    }
+
+    .seal::after {
+      content: "";
+      position: absolute;
+      inset: 3px;
+      border: 1px solid rgba(157, 55, 43, .22);
+    }
+
+    .courses {
+      position: relative;
+      z-index: 1;
+    }
+
+    .courses::before {
+      content: "";
+      position: absolute;
+      top: 7px;
+      bottom: 7px;
+      left: 16px;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--line) 8%, var(--line) 92%, transparent);
+    }
+
+    .course {
+      position: relative;
+      padding: 0 8px 34px 64px;
+      margin: 0 0 34px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1);
+    }
+
+    .course:last-child {
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+
+    .course.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .number {
+      position: absolute;
+      top: 1px;
+      left: 0;
+      width: 33px;
+      height: 33px;
+      display: grid;
+      place-items: center;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: var(--muted);
+      font-family: Didot, "Bodoni 72", "Times New Roman", serif;
+      font-size: 10px;
+      transition: color .35s ease, border-color .35s ease, transform .35s ease;
+    }
+
+    .course:hover .number {
+      color: var(--vermillion);
+      border-color: rgba(157, 55, 43, .48);
+      transform: scale(1.06);
+    }
+
+    .course h2 {
+      margin: 0;
+      font-family: Didot, "Bodoni 72", "Times New Roman", serif;
+      font-size: clamp(21px, 3.4vw, 27px);
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: .075em;
+    }
+
+    .course p {
+      margin: 9px 0 0;
+      color: var(--muted);
+      font-family: Didot, "Bodoni 72", "Times New Roman", serif;
+      font-size: 13px;
+      font-style: italic;
+      line-height: 1.6;
+      letter-spacing: .06em;
+    }
+
+    .footer {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 18px;
+      margin-top: clamp(58px, 9vw, 86px);
+      color: var(--muted);
+    }
+
+    .footer::before,
+    .footer::after {
+      content: "";
+      height: 1px;
+      background: linear-gradient(to var(--direction, right), transparent, var(--line));
+    }
+
+    .footer::after { --direction: left; }
+
+    .footer-copy {
+      text-align: center;
+    }
+
+    .footer-copy p {
+      margin: 0;
+      font-family: Didot, "Bodoni 72", "Times New Roman", serif;
+      font-size: 14px;
+      font-style: italic;
+      letter-spacing: .08em;
+    }
+
+    .footer-copy span {
+      display: block;
+      margin-top: 7px;
+      font-size: 8px;
+      letter-spacing: .34em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 560px) {
+      .stage { padding: 0; }
+      .menu {
+        min-height: 100vh;
+        border: 0;
+        padding-inline: 26px;
+        box-shadow: none;
+      }
+      .edge-copy { right: 10px; opacity: .65; }
+      .seal { position: relative; top: auto; right: auto; margin: 28px auto 0; width: 49px; height: 49px; }
+      .courses::before { left: 13px; }
+      .course { padding-left: 54px; }
+      .number { width: 28px; height: 28px; font-size: 9px; }
+      .footer { gap: 12px; }
+      .message-lockup { width: 82%; gap: 20px; }
+      .message-kicker { gap: 12px; font-size: 7px; }
+      .hidden-message { font-size: clamp(27px, 8vw, 34px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+      }
+      .course { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage">
+    <article class="menu" aria-label="One year anniversary Homakase menu">
+      <div class="reveal-layer" aria-hidden="true">
+        <div class="message-lockup">
+          <div class="message-kicker">One Year</div>
+          <div class="hidden-message">周年快乐，我爱粥宝！</div>
+          <div class="message-note">for us, always.</div>
+        </div>
+      </div>
+      <canvas class="fireworks" aria-hidden="true"></canvas>
+
+      <div class="edge-copy" aria-hidden="true">ホマカセ・家で・一周年</div>
+
+      <header class="header">
+        <p class="eyebrow">One Year Anniversary</p>
+        <h1>HOMAKASE</h1>
+        <div class="at-home">at home</div>
+        <button class="seal celebration-toggle" type="button" aria-pressed="false" aria-label="点亮隐藏纪念语" title="点亮纪念语">一周<br>年</button>
+      </header>
+
+      <section class="courses" aria-label="Courses">
+        <article class="course">
+          <span class="number">I</span>
+          <h2>SCALLOP CRUDO</h2>
+          <p>Scallop · Peach · Ponzu</p>
+        </article>
+
+        <article class="course">
+          <span class="number">II</span>
+          <h2>SALMON CONE</h2>
+          <p>Salmon · Cone · Pineapple · Caviar</p>
+        </article>
+
+        <article class="course">
+          <span class="number">III</span>
+          <h2>WAGYU &amp; UNI TEMAKI</h2>
+          <p>Seared Wagyu · Uni · Shiso · Ikura</p>
+        </article>
+
+        <article class="course">
+          <span class="number">IV</span>
+          <h2>OCTOPUS TTEOK</h2>
+          <p>Octopus · Tteok · Gochujang · Sesame</p>
+        </article>
+      </section>
+
+      <footer class="footer">
+        <div class="footer-copy">
+          <p>for us.</p>
+          <span>with love</span>
+        </div>
+      </footer>
+    </article>
+  </main>
+
+  <script>
+    const menu = document.querySelector('.menu');
+    const courses = [...document.querySelectorAll('.course')];
+    const toggle = document.querySelector('.celebration-toggle');
+    const canvas = document.querySelector('.fireworks');
+    const context = canvas.getContext('2d');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let particles = [];
+    let fireworkFrame;
+    let burstTimers = [];
+
+    courses.forEach((course, index) => {
+      window.setTimeout(() => course.classList.add('is-visible'), 180 + index * 110);
+    });
+
+    menu.addEventListener('pointerenter', () => menu.classList.add('is-exploring'));
+
+    menu.addEventListener('pointermove', (event) => {
+      const rect = menu.getBoundingClientRect();
+      menu.style.setProperty('--glow-x', `${event.clientX - rect.left}px`);
+      menu.style.setProperty('--glow-y', `${event.clientY - rect.top}px`);
+    });
+
+    menu.addEventListener('pointerleave', () => {
+      menu.classList.remove('is-exploring');
+      menu.style.setProperty('--glow-x', '50%');
+      menu.style.setProperty('--glow-y', '20%');
+    });
+
+    function sizeCanvas() {
+      const rect = menu.getBoundingClientRect();
+      const density = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(rect.width * density);
+      canvas.height = Math.round(rect.height * density);
+      context.setTransform(density, 0, 0, density, 0, 0);
+    }
+
+    function burst(x, y, color) {
+      for (let index = 0; index < 24; index += 1) {
+        const angle = (Math.PI * 2 * index) / 24 + Math.random() * .12;
+        const speed = 1.2 + Math.random() * 1.9;
+        particles.push({
+          x, y, color,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: 1,
+          decay: .012 + Math.random() * .009,
+          radius: .7 + Math.random() * .8
+        });
+      }
+    }
+
+    function drawFireworks() {
+      const density = Math.min(window.devicePixelRatio || 1, 2);
+      context.setTransform(1, 0, 0, 1, 0, 0);
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.setTransform(density, 0, 0, density, 0, 0);
+
+      particles = particles.filter((particle) => particle.life > 0);
+      particles.forEach((particle) => {
+        particle.vx *= .985;
+        particle.vy = particle.vy * .985 + .018;
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+        particle.life -= particle.decay;
+        context.globalAlpha = Math.max(0, particle.life) * .72;
+        context.fillStyle = particle.color;
+        context.beginPath();
+        context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+        context.fill();
+      });
+      context.globalAlpha = 1;
+
+      if (particles.length) fireworkFrame = requestAnimationFrame(drawFireworks);
+    }
+
+    function stopFireworks() {
+      burstTimers.forEach(window.clearTimeout);
+      burstTimers = [];
+      cancelAnimationFrame(fireworkFrame);
+      particles = [];
+      context.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function celebrate() {
+      if (reduceMotion.matches) return;
+      stopFireworks();
+      sizeCanvas();
+      const width = menu.clientWidth;
+      const height = menu.clientHeight;
+      burst(width * .5, height * .34, '#a33d31');
+      drawFireworks();
+      burstTimers.push(window.setTimeout(() => burst(width * .28, height * .56, '#b18a50'), 320));
+      burstTimers.push(window.setTimeout(() => burst(width * .72, height * .52, '#5d6259'), 620));
+    }
+
+    function setCelebration(isCelebrating) {
+      menu.classList.toggle('celebration-mode', isCelebrating);
+      toggle.setAttribute('aria-pressed', String(isCelebrating));
+      toggle.setAttribute('aria-label', isCelebrating ? '返回纪念日晚宴菜单' : '点亮隐藏纪念语');
+      toggle.setAttribute('title', isCelebrating ? '返回菜单' : '点亮纪念语');
+
+      if (isCelebrating) celebrate();
+      else stopFireworks();
+    }
+
+    toggle.addEventListener('click', (event) => {
+      event.stopPropagation();
+      setCelebration(!menu.classList.contains('celebration-mode'));
+    });
+
+    document.addEventListener('click', () => {
+      if (menu.classList.contains('celebration-mode')) setCelebration(false);
+    });
+
+    window.addEventListener('resize', () => {
+      if (menu.classList.contains('celebration-mode')) sizeCanvas();
+    });
+  </script>
+</body>
+</html>
